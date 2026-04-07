@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pranay Karakoti — Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080a0f;
+      --border: #1e2330;
+      --accent: #4fffb0;
+      --accent2: #7b6cff;
+      --text: #e8eaf0;
+      --muted: #5a6070;
+      --card: #111520;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      opacity: 0.3;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8, 10, 15, 0.88);
+      backdrop-filter: blur(12px);
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 0 80px;
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.2s ease forwards;
+    }
+    .hero-tag::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+
+    .hero-name {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(56px, 9vw, 100px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.35s ease forwards;
+    }
+    .hero-name .first { display: block; color: var(--text); }
+    .hero-name .last  { display: block; color: var(--accent); }
+
+    .hero-desc {
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.5s ease forwards;
+    }
+    .hero-links {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.65s ease forwards;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--accent); color: #080a0f; font-weight: 500; }
+    .btn-primary:hover { background: #fff; transform: translateY(-1px); }
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+
+    /* SECTIONS */
+    section { padding: 80px 0; border-top: 1px solid var(--border); }
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 48px;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .section-num { color: var(--accent); font-size: 10px; }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .about-text p { color: var(--muted); margin-bottom: 16px; font-size: 13px; }
+    .about-text p strong { color: var(--text); font-weight: 500; }
+    .stat-row { display: flex; gap: 32px; margin-bottom: 28px; }
+    .stat-num { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--accent); line-height: 1; }
+    .stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .skills-grid { display: flex; flex-direction: column; gap: 18px; }
+    .skill-group-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent2); margin-bottom: 8px; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { padding: 4px 10px; background: var(--card); border: 1px solid var(--border); border-radius: 2px; font-size: 11px; color: var(--muted); transition: all 0.2s; }
+    .tag:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* EXPERIENCE */
+    .exp-list { display: flex; flex-direction: column; gap: 2px; }
+    .exp-card {
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.25s;
+    }
+    .exp-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--accent2); transform: scaleY(0); transition: transform 0.25s; }
+    .exp-card:hover { background: #151a25; transform: translateX(4px); }
+    .exp-card:hover::before { transform: scaleY(1); }
+    .exp-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; gap: 16px; }
+    .exp-role { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--text); }
+    .exp-period { font-size: 11px; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+    .exp-org { font-size: 12px; color: var(--accent2); margin-bottom: 12px; }
+    .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .exp-bullets li { font-size: 12px; color: var(--muted); line-height: 1.7; padding-left: 16px; position: relative; }
+    .exp-bullets li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 10px; }
+    .exp-bullets li strong { color: var(--text); font-weight: 500; }
+
+    /* EDUCATION */
+    .edu-card {
+      padding: 28px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      margin-top: 2px;
+    }
+    .edu-school { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+    .edu-degree { font-size: 13px; color: var(--accent2); margin-bottom: 12px; }
+    .edu-location { font-size: 11px; color: var(--muted); margin-bottom: 12px; }
+    .edu-courses { font-size: 12px; color: var(--muted); line-height: 1.8; }
+    .edu-courses span { color: var(--text); }
+
+    /* PROJECTS */
+    .projects-list { display: flex; flex-direction: column; gap: 2px; }
+    .project-card {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: start;
+      gap: 24px;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      text-decoration: none;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--accent); transform: scaleY(0); transition: transform 0.25s; }
+    .project-card:hover { background: #151a25; transform: translateX(4px); }
+    .project-card:hover::before { transform: scaleY(1); }
+    .project-num { font-size: 11px; color: var(--muted); padding-top: 3px; min-width: 24px; }
+    .project-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .project-desc { font-size: 12px; color: var(--muted); line-height: 1.7; margin-bottom: 10px; }
+    .project-metrics { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 10px; }
+    .metric { font-size: 11px; color: var(--accent); display: flex; align-items: center; gap: 4px; }
+    .metric::before { content: '◆'; font-size: 7px; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .project-tag { padding: 2px 8px; background: rgba(75,255,176,0.05); border: 1px solid rgba(75,255,176,0.15); border-radius: 2px; font-size: 10px; color: var(--accent); letter-spacing: 0.05em; }
+    .project-arrow { color: var(--muted); font-size: 18px; padding-top: 2px; transition: color 0.2s, transform 0.2s; }
+    .project-card:hover .project-arrow { color: var(--accent); transform: translate(2px, -2px); }
+
+    /* CONTACT */
+    .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .contact-heading { font-family: 'Syne', sans-serif; font-size: clamp(32px, 5vw, 52px); font-weight: 800; line-height: 1; letter-spacing: -0.03em; margin-bottom: 16px; }
+    .contact-heading .green { color: var(--accent); }
+    .contact-sub { font-size: 12px; color: var(--muted); margin-bottom: 28px; line-height: 1.8; }
+    .contact-links { display: flex; flex-direction: column; gap: 10px; }
+    .contact-link { display: flex; align-items: center; gap: 12px; color: var(--muted); text-decoration: none; font-size: 12px; transition: color 0.2s; padding: 10px 16px; border: 1px solid var(--border); border-radius: 2px; background: var(--card); }
+    .contact-link:hover { color: var(--accent); border-color: var(--accent); }
+    .contact-link-icon { font-size: 14px; width: 20px; text-align: center; }
+
+    footer { border-top: 1px solid var(--border); padding: 24px 0; text-align: center; font-size: 11px; color: var(--muted); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 640px) {
+      .about-grid, .contact-inner { grid-template-columns: 1fr; }
+      .project-card { grid-template-columns: auto 1fr; }
+      .project-arrow { display: none; }
+      .exp-header { flex-direction: column; gap: 2px; }
+      .nav-links { gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="nav-logo">PK.</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-tag">Open to Summer 2026 internships</div>
+      <h1 class="hero-name">
+        <span class="first">Pranay</span>
+        <span class="last">Karakoti</span>
+      </h1>
+      <p class="hero-desc">
+        CS student at UIC building at the intersection of AI, backend systems, and data.
+        I ship real products — from Chrome Extensions used by 200+ people to AI agents that refactor legacy codebases at scale.
+      </p>
+      <div class="hero-links">
+        <a href="#projects" class="btn btn-primary">View Projects ↓</a>
+        <a href="mailto:pranay846@outlook.com" class="btn btn-ghost">Get in Touch</a>
+        <a href="https://github.com/Pranay847" target="_blank" class="btn btn-ghost">GitHub ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <div class="section-label"><span class="section-num">01</span> About</div>
+      <div class="about-grid reveal">
+        <div class="about-text">
+          <div class="stat-row">
+            <div class="stat"><div class="stat-num">200+</div><div class="stat-label">Extension Users</div></div>
+            <div class="stat"><div class="stat-num">1M+</div><div class="stat-label">Rows Analyzed</div></div>
+            <div class="stat"><div class="stat-num">10K+</div><div class="stat-label">Nodes Mapped</div></div>
+          </div>
+          <p>I'm a <strong>Computer Science student at UIC</strong>, graduating May 2027. I build AI-powered systems, backend APIs, and developer tools — with a focus on shipping things that work at scale.</p>
+          <p>My recent work spans <strong>LLM pipelines</strong>, graph-based code analysis, full-stack web apps, and Chrome Extensions. I'm especially interested in AI infrastructure and backend engineering.</p>
+          <p>Courses: Data Structures & Algorithms · OOP · Discrete Math · Operating Systems · Machine Organization · Software Design.</p>
+        </div>
+        <div class="skills-grid">
+          <div>
+            <div class="skill-group-label">Languages</div>
+            <div class="skill-tags">
+              <span class="tag">Python</span><span class="tag">C/C++</span><span class="tag">JavaScript</span>
+              <span class="tag">TypeScript</span><span class="tag">Java</span><span class="tag">SQL</span>
+            </div>
+          </div>
+          <div>
+            <div class="skill-group-label">Frameworks & Tools</div>
+            <div class="skill-tags">
+              <span class="tag">FastAPI</span><span class="tag">React.js</span><span class="tag">LangChain</span>
+              <span class="tag">LangGraph</span><span class="tag">Streamlit</span><span class="tag">Docker</span>
+              <span class="tag">Neo4j</span><span class="tag">PostgreSQL</span>
+            </div>
+          </div>
+          <div>
+            <div class="skill-group-label">AI / ML</div>
+            <div class="skill-tags">
+              <span class="tag">RAG</span><span class="tag">Stable Diffusion</span><span class="tag">XGBoost</span>
+              <span class="tag">FAISS</span><span class="tag">MCP</span><span class="tag">Pydantic v2</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="container">
+      <div class="section-label"><span class="section-num">02</span> Experience & Education</div>
+      <div class="exp-list reveal">
+
+        <div class="exp-card">
+          <div class="exp-header">
+            <div>
+              <div class="exp-role">Hackathon Participant</div>
+              <div class="exp-org">Google Chrome Built-in AI Challenge 2025</div>
+            </div>
+            <div class="exp-period">Sep 2025 — Present</div>
+          </div>
+          <ul class="exp-bullets">
+            <li>Built a Chrome Extension for real-time writing, translation, and tone refinement — <strong>200+ active users</strong> during beta testing.</li>
+            <li>Enabled multilingual support across <strong>50+ languages</strong> via the Translator API.</li>
+            <li>Leveraged Proofreader and Rewriter APIs yielding an average <strong>18% improvement in readability scores</strong>.</li>
+          </ul>
+        </div>
+
+        <div class="exp-card">
+          <div class="exp-header">
+            <div>
+              <div class="exp-role">Participant</div>
+              <div class="exp-org">100 Devs Bootcamp</div>
+            </div>
+            <div class="exp-period">Jun 2025 — Aug 2025</div>
+          </div>
+          <ul class="exp-bullets">
+            <li>Built a <strong>full-stack job tracker</strong> with Streamlit frontend and FastAPI backend, persisting to PostgreSQL via SQLAlchemy.</li>
+            <li>Designed RESTful APIs with <strong>typed Pydantic v2 models</strong>, structured error handling, and complete auth + CRUD endpoints.</li>
+            <li>Implemented <strong>Argon2 password hashing</strong> and dev token auth; externalized config with .env for clean environment management.</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="edu-card reveal">
+        <div class="edu-school">University of Illinois at Chicago</div>
+        <div class="edu-degree">B.S. Computer Science — Expected May 2027</div>
+        <div class="edu-location">Chicago, IL</div>
+        <div class="edu-courses">
+          <span>Relevant Coursework:</span> Data Structures & Algorithms · OOP · Discrete Math ·
+          Operating Systems · Machine Organization · Software Design
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="container">
+      <div class="section-label"><span class="section-num">03</span> Projects</div>
+      <div class="projects-list reveal">
+
+        <a href="https://github.com/Pranay847" target="_blank" class="project-card">
+          <span class="project-num">01</span>
+          <div class="project-body">
+            <div class="project-title">M.A.C.E. — Monolith Analysis & Clustering Engine</div>
+            <div class="project-desc">AI refactoring agent that automates decoupling of legacy codebases. Uses Louvain Modularity in Neo4j to identify microservice boundaries and shadow-routing middleware to mirror live API traffic during migration.</div>
+            <div class="project-metrics">
+              <span class="metric">40% reduction in extraction time</span>
+              <span class="metric">100% payload parity</span>
+              <span class="metric">10,000+ nodes mapped</span>
+            </div>
+            <div class="project-tags">
+              <span class="project-tag">LangChain</span><span class="project-tag">Neo4j</span>
+              <span class="project-tag">FastAPI</span><span class="project-tag">Pydantic</span><span class="project-tag">Python</span>
+            </div>
+          </div>
+          <span class="project-arrow">↗</span>
+        </a>
+
+        <a href="https://github.com/Pranay847" target="_blank" class="project-card">
+          <span class="project-num">02</span>
+          <div class="project-body">
+            <div class="project-title">Generative AI Stock Portfolio Analyzer</div>
+            <div class="project-desc">Intelligent stock recommendation system using RAG pipelines and predictive modeling to analyze market data at scale. Automates buy/sell signal generation with vector retrieval and LLM-powered reasoning.</div>
+            <div class="project-metrics">
+              <span class="metric">1M+ rows of market data</span>
+              <span class="metric">100+ stocks covered</span>
+            </div>
+            <div class="project-tags">
+              <span class="project-tag">RAG</span><span class="project-tag">FAISS</span>
+              <span class="project-tag">XGBoost</span><span class="project-tag">LangChain</span><span class="project-tag">Python</span>
+            </div>
+          </div>
+          <span class="project-arrow">↗</span>
+        </a>
+
+        <a href="https://github.com/Pranay847" target="_blank" class="project-card">
+          <span class="project-num">03</span>
+          <div class="project-body">
+            <div class="project-title">Generative Image Editing Tool</div>
+            <div class="project-desc">AI-powered image editor supporting 15+ natural language transformation types including style transfer and object insertion. Optimized Stable Diffusion inference with GPU batching and memory-efficient pipelines.</div>
+            <div class="project-metrics">
+              <span class="metric">15+ transformation types</span>
+              <span class="metric">25% faster inference</span>
+            </div>
+            <div class="project-tags">
+              <span class="project-tag">Stable Diffusion</span><span class="project-tag">OpenCV</span>
+              <span class="project-tag">Python</span><span class="project-tag">GPU Optimization</span>
+            </div>
+          </div>
+          <span class="project-arrow">↗</span>
+        </a>
+
+        <a href="https://github.com/Pranay847" target="_blank" class="project-card">
+          <span class="project-num">04</span>
+          <div class="project-body">
+            <div class="project-title">Full-Stack Job Tracker</div>
+            <div class="project-desc">Production-grade job application manager with secure auth, full CRUD, and a responsive Streamlit UI. Built with FastAPI, PostgreSQL, SQLAlchemy, and Argon2 password hashing.</div>
+            <div class="project-tags">
+              <span class="project-tag">FastAPI</span><span class="project-tag">PostgreSQL</span>
+              <span class="project-tag">Streamlit</span><span class="project-tag">SQLAlchemy</span><span class="project-tag">Docker</span>
+            </div>
+          </div>
+          <span class="project-arrow">↗</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-label"><span class="section-num">04</span> Contact</div>
+      <div class="contact-inner reveal">
+        <div>
+          <h2 class="contact-heading">Let's<br/><span class="green">work</span><br/>together.</h2>
+          <p class="contact-sub">Open to internships, co-ops, and project collaborations.<br/>Currently seeking Summer 2026 opportunities.</p>
+          <a href="mailto:pranay846@outlook.com" class="btn btn-primary">Send an Email →</a>
+        </div>
+        <div class="contact-links">
+          <a href="mailto:pranay846@outlook.com" class="contact-link">
+            <span class="contact-link-icon">✉</span> pranay846@outlook.com
+          </a>
+          <a href="https://github.com/Pranay847" target="_blank" class="contact-link">
+            <span class="contact-link-icon">⌥</span> github.com/Pranay847
+          </a>
+          <a href="https://linkedin.com/in/pranay-karakoti-588024337" target="_blank" class="contact-link">
+            <span class="contact-link-icon">◈</span> linkedin.com/in/pranay-karakoti-588024337
+          </a>
+          <a href="tel:+12242615932" class="contact-link">
+            <span class="contact-link-icon">◎</span> +1 (224) 261-5932
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      © 2026 Pranay Karakoti — University of Illinois at Chicago
+    </div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
